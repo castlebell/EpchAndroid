@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AndroidEpch</string>
+    <string name="title_activity_navigation">MainActivity</string>
+    <string name="title_youtube">Youtube</string>
+    <string name="title_weekly">주보</string>
+    <string name="title_setting">설정</string>
+</resources>
