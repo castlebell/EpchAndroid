@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "145688411281",
+    "project_id": "epch-project",
+    "storage_bucket": "epch-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:145688411281:android:494c02c020d0277351d330",
+        "android_client_info": {
+          "package_name": "com.castlebell.epch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "145688411281-ofsuiedb5g7gh47l24otcvlh9ng1b5nd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqf-BDQgWr-vD0S_GS7LLiDh7U1nKEW5k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "145688411281-ofsuiedb5g7gh47l24otcvlh9ng1b5nd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

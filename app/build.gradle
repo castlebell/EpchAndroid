@@ -43,7 +43,6 @@ dependencies {
     implementation 'com.jakewharton:butterknife:10.2.3'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.3'
 
-
     //ShimmerRecyclerView 라이브러리
     implementation 'com.github.sharish:ShimmerRecyclerView:v1.3'
 
@@ -51,8 +50,6 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    //유튜브 뷰 플레이어 라이브러리
-    implementation 'kr.co.prnd:youtube-player-view:1.4.0'
 
     //rxjava
     implementation 'io.reactivex.rxjava3:rxandroid:3.0.0'
@@ -63,9 +60,7 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.4.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'
 
-    //youtube 라이브러리
-    implementation 'com.google.apis:google-api-services-youtube:v3-rev183-1.22.0'
-
-
-
+    //okhttp
+    implementation 'com.squareup.okhttp:okhttp:2.7.2'
+    implementation 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
 }
