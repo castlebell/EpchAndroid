@@ -1,6 +1,7 @@
 package com.castlebell.epch.activity.ui.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +11,15 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.castlebell.epch.R;
 import com.castlebell.epch.vo.data.YoutubeDataModel;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by mdmunirhossain on 12/18/17.
@@ -22,19 +29,17 @@ public class VideoPostAdapter extends RecyclerView.Adapter<VideoPostAdapter.Yout
 
     private ArrayList<YoutubeDataModel> dataSet;
     private Context mContext = null;
-    private final AdapterView.OnItemClickListener listener;
 
 
-    public VideoPostAdapter(Context mContext, ArrayList<YoutubeDataModel> dataSet, AdapterView.OnItemClickListener listener) {
+    public VideoPostAdapter(Context mContext, ArrayList<YoutubeDataModel> dataSet) {
         this.dataSet = dataSet;
         this.mContext = mContext;
-        this.listener = listener;
 
     }
 
     @Override
     public YoutubePostHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.youtube_post_layout,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_youtube,parent,false);
         YoutubePostHolder postHolder = new YoutubePostHolder(view);
         return postHolder;
     }
@@ -42,23 +47,11 @@ public class VideoPostAdapter extends RecyclerView.Adapter<VideoPostAdapter.Yout
     @Override
     public void onBindViewHolder(YoutubePostHolder holder, int position) {
 
-        //set the views here
-        TextView textViewTitle = holder.textViewTitle;
-        TextView textViewDes = holder.textViewDes;
-        TextView textViewDate = holder.textViewDate;
-        ImageView ImageThumb = holder.ImageThumb;
-
         YoutubeDataModel object = dataSet.get(position);
-
-        textViewTitle.setText(object.getTitle());
-        textViewDes.setText(object.getDescription());
-        textViewDate.setText(object.getPublishedAt());
-        holder.bind(dataSet.get(position), listener);
-
+        holder.youtube_title.setText(object.getTitle());
+        holder.youtube_content.setText(object.getDescription());
         //TODO: image will be downloaded from url
-        Picasso.with(mContext).load(object.getThumbnail()).into(ImageThumb);
-
-
+        Picasso.with(mContext).load(object.getThumbnail()).into(holder.youtube_image);
 
     }
 
@@ -68,27 +61,23 @@ public class VideoPostAdapter extends RecyclerView.Adapter<VideoPostAdapter.Yout
     }
 
     public static class YoutubePostHolder extends RecyclerView.ViewHolder {
-        TextView textViewTitle;
-        TextView textViewDes;
-        TextView textViewDate;
-        ImageView ImageThumb;
+
+
+        @BindView(R.id.youtube_image)
+        ImageView youtube_image;
+        @BindView(R.id.youtube_title)
+        TextView youtube_title;
+        @BindView(R.id.youtube_content)
+        TextView youtube_content;
 
         public YoutubePostHolder(View itemView) {
             super(itemView);
-            this.textViewTitle = (TextView) itemView.findViewById(R.id.textViewTitle);
-            this.textViewDes = (TextView) itemView.findViewById(R.id.textViewDes);
-            this.textViewDate = (TextView) itemView.findViewById(R.id.textViewDate);
-            this.ImageThumb = (ImageView) itemView.findViewById(R.id.ImageThumb);
-
+            ButterKnife.bind(this, itemView);
+        }
+        @OnClick(R.id.youtube_click)
+        public void listClick(View itemView) {
+            Log.i("test","test");
         }
 
-        public void bind(final YoutubeDataModel item, final AdapterView.OnItemClickListener listener) {
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(item);
-                }
-            });
-        }
     }
 }

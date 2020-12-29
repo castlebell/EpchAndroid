@@ -3,5 +3,6 @@
     android:id="@+id/shimmer_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:shimmer_demo_layout="@layout/layout_demo"
+    android:scrollbars="vertical"
+    app:shimmer_demo_layout="@layout/layout_youtube"
     app:shimmer_demo_shimmer_color="#73ffffff" />

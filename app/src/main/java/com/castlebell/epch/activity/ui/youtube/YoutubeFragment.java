@@ -1,18 +1,22 @@
 package com.castlebell.epch.activity.ui.youtube;
 
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-
+import androidx.recyclerview.widget.RecyclerView;
 import com.castlebell.epch.R;
+import com.castlebell.epch.activity.ui.adapter.VideoPostAdapter;
 import com.castlebell.epch.vo.data.YoutubeDataModel;
+import com.cooltechworks.views.shimmer.ShimmerRecyclerView;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,10 +27,10 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class YoutubeFragment extends Fragment {
@@ -35,15 +39,21 @@ public class YoutubeFragment extends Fragment {
     private static String Play_LISTID = "PLAnlfQnlOg13LZ3yxmDJf8snCGXiCzJkK";
     private static String CHANNLE_GET_URL = "https://www.googleapis.com/youtube/v3/playlistItems?part=contentDetails&part=snippet&part=contentDetails&playlistId=" + Play_LISTID + "&key=" + GOOGLE_YOUTUBE_API_KEY + "";
 
+    private VideoPostAdapter adapter = null;
+    private ArrayList<YoutubeDataModel> mListData = new ArrayList<>();
+
+    @BindView(R.id.shimmer_recycler_view)
+    ShimmerRecyclerView shimmer_recycler_view;
+
 
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_youtube, container, false);
         ButterKnife.bind(this, root);
+        initList(mListData);
         new RequestYoutubeAPI().execute();
         return root;
     }
 
-    //create an asynctask to get all the data from youtube
     private class RequestYoutubeAPI extends AsyncTask<Void, String, String> {
         @Override
         protected void onPreExecute() {
@@ -54,7 +64,6 @@ public class YoutubeFragment extends Fragment {
         protected String doInBackground(Void... params) {
             HttpClient httpClient = new DefaultHttpClient();
             HttpGet httpGet = new HttpGet(CHANNLE_GET_URL);
-            Log.e("URL", CHANNLE_GET_URL);
             try {
                 HttpResponse response = httpClient.execute(httpGet);
                 HttpEntity httpEntity = response.getEntity();
@@ -74,8 +83,8 @@ public class YoutubeFragment extends Fragment {
             if (response != null) {
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    Log.e("response", jsonObject.toString());
-                    parseVideoListFromResponse(jsonObject);
+                    mListData = parseVideoListFromResponse(jsonObject);
+                    initList(mListData);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -84,17 +93,9 @@ public class YoutubeFragment extends Fragment {
     }
 
     private void initList(ArrayList<YoutubeDataModel> mListData) {
-        mList_videos.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new VideoPostAdapter(getActivity(), mListData, new OnItemClickListener() {
-            @Override
-            public void onItemClick(YoutubeDataModel item) {
-                YoutubeDataModel youtubeDataModel = item;
-                Intent intent = new Intent(getActivity(), DetailsActivity.class);
-                intent.putExtra(YoutubeDataModel.class.toString(), youtubeDataModel);
-                startActivity(intent);
-            }
-        });
-        mList_videos.setAdapter(adapter);
+
+        adapter = new VideoPostAdapter(getActivity(), mListData);
+        shimmer_recycler_view.setAdapter(adapter);
 
     }
 
@@ -119,7 +120,7 @@ public class YoutubeFragment extends Fragment {
                             String title = jsonSnippet.getString("title");
                             String description = jsonSnippet.getString("description");
                             String publishedAt = jsonSnippet.getString("publishedAt");
-                            String thumbnail = jsonSnippet.getJSONObject("thumbnails").getJSONObject("high").getString("url");
+                            String thumbnail = jsonSnippet.getJSONObject("thumbnails").getJSONObject("maxres").getString("url");
 
                             youtubeObject.setTitle(title);
                             youtubeObject.setDescription(description);
